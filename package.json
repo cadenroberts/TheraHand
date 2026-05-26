@@ -1,0 +1,60 @@
+{
+  "name": "cse123a-therahand",
+  "type": "module",
+  "version": "3.0.0",
+  "description": "cse123a-therahand",
+  "author": "Caden Roberts <cawrober@ucsc.edu>",
+  "license": "UNLICENSED",
+  "repository": "none",
+  "packageManager": "npm@11.10.1",
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@mui/icons-material": "^7.3.8",
+    "@mui/material": "^7.3.8",
+    "@react-three/drei": "^9.120.6",
+    "@react-three/fiber": "^8.18.0",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "date-fns": "^4.1.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-openapi-validator": "^5.6.2",
+    "express-session": "^1.17.3",
+    "js-yaml": "^4.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "material-ui-popup-state": "^5.3.0",
+    "pg": "^8.12.0",
+    "prop-types": "^15.8.1",
+    "react": "^18.2.0",
+    "react-datepicker": "^7.6.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.22.3",
+    "swagger-ui-express": "^5.0.1",
+    "three": "^0.176.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "5.1.4",
+    "eslint": "8.57.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-react": "^7.37.4",
+    "eslint-plugin-react-hooks": "^4.6.2",
+    "eslint-plugin-react-refresh": "0.4.6",
+    "nodemon": "^3.1.9",
+    "vite": "7.3.1"
+  },
+  "overrides": {
+    "minimatch": "^10.2.1",
+    "three-mesh-bvh": "^0.8.0"
+  },
+  "scripts": {
+    "build": "vite build",
+    "front": "vite --port 3000 --host",
+    "back": "nodemon src/server.js",
+    "lint": "eslint src --ext js,jsx --no-inline-config --max-warnings 0"
+  }
+}

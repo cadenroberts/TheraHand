@@ -1,0 +1,80 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_DB: therahand
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: ci-test-password
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Initialize database schema
+      env:
+        PGPASSWORD: ci-test-password
+      run: |
+        psql -h localhost -U postgres -d therahand -f sql/schema.sql
+        psql -h localhost -U postgres -d therahand -f sql/data.sql
+
+    - name: Run linter
+      run: npm run lint
+
+    - name: Run tests
+      run: npm test
+      env:
+        JWT_SECRET: ci-test-secret-key
+        POSTGRES_HOST: localhost
+        POSTGRES_PORT: 5432
+        POSTGRES_DB: therahand
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: ci-test-password
+
+    - name: Start backend
+      run: npm run back &
+      env:
+        JWT_SECRET: ci-test-secret-key
+        POSTGRES_HOST: localhost
+        POSTGRES_PORT: 5432
+        POSTGRES_DB: therahand
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: ci-test-password
+
+    - name: Wait for backend to start
+      run: |
+        timeout 30 bash -c 'until curl -sf http://localhost:3010/v0/runner; do sleep 1; done'
+
+    - name: Run demo verification script
+      run: |
+        cp .env.example .env
+        sed -i 's/your-secure-random-string-change-in-production/ci-test-secret-key/' .env
+        sed -i 's/your-database-password/ci-test-password/' .env
+        ./scripts/demo.sh
