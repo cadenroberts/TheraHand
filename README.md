@@ -1,6 +1,6 @@
 # TheraHand
 
-Physical therapy management platform connecting healthcare providers and patients through IoT-enabled hand rehabilitation exercises.
+Full-stack physical therapy management platform connecting healthcare providers and patients through IoT-enabled hand rehabilitation exercises.
 
 ## What It Does
 
@@ -122,12 +122,6 @@ Physical therapy management platform connecting healthcare providers and patient
 - Patient registers device via hardware_id
 - Device posts results to correct device_id
 - Results are retrievable by patient and assigned doctor
-
-**Expected Pass Criteria:**
-- All authentication flows return correct status codes
-- Authorization checks prevent cross-patient data access
-- Database constraints prevent invalid relationships
-- OpenAPI validator rejects malformed requests
 
 ## Demo
 
