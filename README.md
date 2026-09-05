@@ -98,11 +98,6 @@ Physical therapy management platform connecting healthcare providers and patient
 - More robust than application-level checks (cannot be bypassed by direct SQL)
 - Tradeoff: Less visible than middleware logic, harder to debug
 
-**Wildcard Dependency Versions**
-- Current state: All npm packages use `*`
-- Risk: Non-reproducible builds, potential breaking changes
-- Rationale: Rapid prototyping phase; production deployment requires pinning
-
 ## Evaluation
 
 ### Correctness Criteria
@@ -127,24 +122,6 @@ Physical therapy management platform connecting healthcare providers and patient
 - Patient registers device via hardware_id
 - Device posts results to correct device_id
 - Results are retrievable by patient and assigned doctor
-
-### Test Commands
-
-```bash
-# Install dependencies
-npm install
-
-# Run unit and integration tests
-npm test
-
-# Run tests with coverage report
-npm test -- --coverage
-
-# Lint codebase
-npm run lint
-```
-
-**Current Test Coverage:** 0% (no tests implemented yet)
 
 **Expected Pass Criteria:**
 - All authentication flows return correct status codes
@@ -185,28 +162,6 @@ Services will be available at:
 - Backend API: http://localhost:3010/v0
 - API Documentation: http://localhost:3010/v0/api-docs/
 
-### Demo User Accounts
-
-**Admin**
-- Email: `a@admin.com`
-- Password: `admin`
-- Capabilities: Create doctors, view all doctors
-
-**Doctor (Dr. Harrison)**
-- Email: `dr.harrison@therahand.com`
-- Password: `doctor`
-- Patients: Aliyaa, Ethan
-
-**Doctor (Dr. Lu)**
-- Email: `dr.lu@therahand.com`
-- Password: `doctor`
-- Patients: Jhovanny
-
-**Patient (Aliyaa)**
-- Email: `aliyaa@therahand.com`
-- Password: `patient`
-- Doctor: Dr. Harrison
-
 ### Expected Behavior
 
 1. Login as doctor at http://localhost:3000/login
@@ -220,28 +175,6 @@ Services will be available at:
 9. Register device via hardware_id
 10. (Device simulation) POST result to `/v0/results/{device_id}` with exercise data
 11. View exercise history in patient dashboard
-
-### Troubleshooting
-
-**Port 3010 already in use:**
-```bash
-./PortClear.sh
-```
-
-**Database connection failed:**
-```bash
-docker compose down
-docker compose up -d
-# Wait 10 seconds for PostgreSQL initialization
-```
-
-**Frontend cannot reach backend:**
-- Verify backend is running on port 3010
-- Check Vite proxy configuration in `vite.config.js`
-
-**JWT expiration during demo:**
-- Tokens expire after 30 minutes
-- Refresh page and login again
 
 ## Repository Layout
 
@@ -277,48 +210,5 @@ TheraHand_app/
 ├── start.sh                  # Full stack startup script
 ├── PortClear.sh              # Port cleanup utility
 ├── PSQL.sh                   # PostgreSQL shell access
-├── ARCHITECTURE.md           # Detailed architecture documentation
-├── DESIGN_DECISIONS.md       # ADR-style design decisions
-├── EVAL.md                   # Evaluation criteria and test plan
-├── DEMO.md                   # Step-by-step demo instructions
 └── README.md                 # This file
 ```
-
-## Limitations
-
-**Production Readiness**
-- No dependency pinning (all versions use `*`)
-- No refresh token mechanism (tokens expire after 30 minutes)
-- No rate limiting on authentication endpoints
-- CORS allows all origins
-- No audit logging for sensitive operations
-- No HTTPS/TLS termination configuration
-
-**Scalability**
-- No database connection pooling limits
-- No caching layer
-- No horizontal scaling guidance
-- Stateful JWT means load balancer must route by session
-
-**Testing**
-- Zero test coverage (infrastructure exists but no tests written)
-- No E2E tests for device integration
-- No performance benchmarks
-
-**Observability**
-- Console-only logging (no structured logs)
-- No health check endpoints
-- No metrics collection
-- No distributed tracing
-
-**Data Management**
-- No database migration system (only supports fresh initialization)
-- No data retention policy
-- No backup/restore procedures
-- No soft delete support
-
-**Device Integration**
-- No device authentication beyond hardware_id
-- No data validation for exercise results
-- No firmware versioning or update mechanism
-- No offline mode or result queueing
