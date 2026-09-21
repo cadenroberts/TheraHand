@@ -72,31 +72,9 @@ Full-stack physical therapy management platform connecting healthcare providers 
 - Exercise assignments (JSONB metadata: name, finger, flexion, reps)
 - Exercise results (JSONB data from devices)
 
-**IoT Device**
+**ESP32C3**
 - Submits hardware_id for registration
 - Posts exercise completion data (finger, flexion, reps achieved)
-
-## Design Tradeoffs
-
-**JSONB for User Data**
-- Pros: Flexible schema, easy to add fields without migrations
-- Cons: No compile-time type safety, requires manual validation in app code
-- Chosen because user attributes (email, name, password) are stable and extensions are rare
-
-**JWT with 30-Minute Expiration**
-- Pros: Stateless authentication, reduced database load
-- Cons: Cannot revoke tokens before expiration, short session duration
-- Chosen for prototype simplicity; production would need refresh tokens
-
-**Single Doctor per Patient**
-- Enforced by `doctor_patients` junction table (unique patient_id)
-- Simplifies authorization logic and message routing
-- Limitation: No multi-provider coordination support
-
-**Database Trigger for Message Validation**
-- Ensures patients can only message their assigned doctor at database level
-- More robust than application-level checks (cannot be bypassed by direct SQL)
-- Tradeoff: Less visible than middleware logic, harder to debug
 
 ## Evaluation
 
